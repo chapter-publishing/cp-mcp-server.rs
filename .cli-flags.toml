@@ -1,14 +1,19 @@
-# flags-2-env surface for `chapter-publishing-mcp-server`
+# flags-2-env surface for `chapter-publishing-mcp-server`.
 [identity]
 service = "chapter-publishing-mcp-server"
 type_name = "McpEnv"
 
 [help]
-url = "https://github.com/chapter-publishing/chapter-publishing-mcp-server.rs"
+url = "https://github.com/chapter-publishing/cp-mcp-server.rs"
 columns = ["options", "env", "type", "default", "description"]
 
 [parse]
+unknown_options_env = "CHAPTER_PUBLISHING_MCP_SERVER_UNKNOWN_OPTIONS"
+errors_env = "CHAPTER_PUBLISHING_MCP_SERVER_PARSE_ERRORS"
 allow_unknown = false
+
+[env]
+files = []
 
 [flags.chapter-publishing-mcp-server-bind]
 env = "CHAPTER_PUBLISHING_MCP_SERVER_BIND"

@@ -1,0 +1,60 @@
+name: zed-metadata
+
+on:
+  pull_request:
+    paths:
+      - '.zpkg.toml'
+      - '.cli-flags.toml'
+      - '.github/workflows/zed-metadata.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.zpkg.toml'
+      - '.cli-flags.toml'
+      - '.github/workflows/zed-metadata.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Verify exact reviewed head
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+      - name: Install checksum-pinned zed 0.3.0
+        shell: bash
+        env:
+          ZED_SHA256: f87576bc289e43ed647902527e7be70566445d2f1fd11249f067ab35547d4b8a
+        run: |
+          set -euo pipefail
+          url='https://github.com/zed-pkg/zed-cli/releases/download/v0.3.0/zed-x86_64-unknown-linux-gnu.tar.gz'
+          curl --fail --location --silent --show-error "$url" -o /tmp/zed.tar.gz
+          printf '%s  %s\n' "$ZED_SHA256" /tmp/zed.tar.gz | sha256sum --check --strict
+          mkdir -p /tmp/zed-bin
+          tar -xzf /tmp/zed.tar.gz -C /tmp/zed-bin
+          test -x /tmp/zed-bin/zed
+      - name: Validate Zed package metadata
+        run: /tmp/zed-bin/zed validate --manifest .zpkg.toml --json
+      - name: Verify repository and flags-contract identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -F 'url = "https://github.com/chapter-publishing/cp-mcp-server.rs"' .zpkg.toml
+          grep -F 'url = "https://github.com/chapter-publishing/cp-mcp-server.rs"' .cli-flags.toml
+          grep -F '"zed-pkg/zed-cli" = "^0.3.0"' .zpkg.toml
+          grep -F 'allow_unknown = false' .cli-flags.toml
+          grep -F 'files = []' .cli-flags.toml
+          if grep -R -F 'chapter-publishing/chapter-publishing-mcp-server.rs' .zpkg.toml .cli-flags.toml; then
+            echo 'stale repository identity remains in TOML contracts' >&2
+            exit 1
+          fi
+      - name: Require source tree unchanged
+        run: git diff --exit-code HEAD

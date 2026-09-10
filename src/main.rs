@@ -20,7 +20,7 @@ const DEPENDENCIES: &[&str] = &[
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     run_stdio(OrgSpec {
         organization: "chapter-publishing",
-        repository: "chapter-publishing/chapter-publishing-mcp-server.rs",
+        repository: "chapter-publishing/cp-mcp-server.rs",
         service_name: "chapter-publishing-mcp-server",
         package_name: "chapter-publishing-mcp-server",
         dependencies: DEPENDENCIES,

@@ -9,7 +9,7 @@ language = "rust"
 
 [package.repository]
 vcs = "git"
-url = "https://github.com/chapter-publishing/chapter-publishing-mcp-server.rs"
+url = "https://github.com/chapter-publishing/cp-mcp-server.rs"
 
 [dependencies]
 "oresoftware/mcp-rust-libs" = "^0.1.0"
@@ -17,7 +17,7 @@ url = "https://github.com/chapter-publishing/chapter-publishing-mcp-server.rs"
 "shared-auth/shared-auth-clients" = "^0.1.0"
 "shared-auth/shared-auth-interfaces" = "^0.1.0"
 "shared-auth/shared-auth-lib" = "^0.1.0"
-"zed-pkg/zed-cli" = "^0.2.3"
+"zed-pkg/zed-cli" = "^0.3.0"
 
 [build]
 command = "cargo build --release --locked --bin chapter-publishing-mcp-server"
@@ -25,6 +25,11 @@ outputs = ["target/release/chapter-publishing-mcp-server"]
 
 [bin]
 chapter-publishing-mcp-server = "target/release/chapter-publishing-mcp-server"
+
+[cli]
+flags_contract = ".cli-flags.toml"
+flags_runtime = "flags-2-env"
+primary_bin = "chapter-publishing-mcp-server"
 
 [publish]
 include_readme = true

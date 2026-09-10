@@ -26,11 +26,6 @@ outputs = ["target/release/chapter-publishing-mcp-server"]
 [bin]
 chapter-publishing-mcp-server = "target/release/chapter-publishing-mcp-server"
 
-[cli]
-flags_contract = ".cli-flags.toml"
-flags_runtime = "flags-2-env"
-primary_bin = "chapter-publishing-mcp-server"
-
 [publish]
 include_readme = true
 tag_format = "v{version}"

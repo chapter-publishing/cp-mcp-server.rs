@@ -1,5 +1,10 @@
 //! Fleet-generated organization MCP server entry point.
 
+#[path = "../generated/rust/env.rs"]
+mod env;
+#[path = "../generated/rust/runtime.rs"]
+mod env_runtime;
+
 use ore_mcp_org_server::{run_stdio, OrgSpec};
 
 const DEPENDENCIES: &[&str] = &[

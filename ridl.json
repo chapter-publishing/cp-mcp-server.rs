@@ -1,0 +1,8 @@
+{
+  "maps": [
+    "../chapter-interfaces/route-maps/mcp.route-map.json"
+  ],
+  "out": "generated",
+  "skip_source": true,
+  "skip_drift": true
+}

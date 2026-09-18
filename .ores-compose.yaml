@@ -1,0 +1,11 @@
+schema_version: ores.compose.v1
+project: cp-mcp-server.rs
+allow_lazy_start: false
+
+services:
+  cp-mcp-server.rs:
+    name: cp-mcp-server.rs
+    runtime: host
+    build:
+      - ["cargo", "build", "--bins"]
+    command: ["./target/debug/cp-mcp-server.rs"]

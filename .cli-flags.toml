@@ -1,0 +1,18 @@
+# flags-2-env surface for `chapter-publishing-mcp-server`
+[identity]
+service = "chapter-publishing-mcp-server"
+type_name = "McpEnv"
+
+[help]
+url = "https://github.com/chapter-publishing/chapter-publishing-mcp-server.rs"
+columns = ["options", "env", "type", "default", "description"]
+
+[parse]
+allow_unknown = false
+
+[flags.chapter-publishing-mcp-server-bind]
+env = "CHAPTER_PUBLISHING_MCP_SERVER_BIND"
+long = "chapter-publishing-mcp-server-bind"
+type = "string"
+default = "127.0.0.1:9090"
+help = "Runtime environment key CHAPTER_PUBLISHING_MCP_SERVER_BIND."

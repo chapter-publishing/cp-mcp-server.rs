@@ -29,6 +29,8 @@ jobs:
       - name: Verify locked dependency graph
         run: cargo metadata --locked --format-version 1 >/dev/null
       - name: Format
+      - name: Verify bounded MCP and AttoLang admission policy
+        run: python3 formal/check_mcp_policy.py
         run: cargo fmt --all -- --check
       - name: Lint
         run: cargo clippy --locked --all-targets -- -D warnings

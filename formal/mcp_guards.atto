@@ -1,0 +1,24 @@
+// Pure AttoLang policy reference, not compiled MCP server adapter.
+define module chapter_mcp_guards as
+  pub fnc admit_tool(bool known_readonly_tool,
+                     bool requests_mutation,
+                     bool carries_credential): bool {
+    return known_readonly_tool && !requests_mutation && !carries_credential;
+  }
+
+  pub fnc admit_stdout(bool json_rpc_frame,
+                       bool contains_secret,
+                       bool contains_diagnostic): bool {
+    return json_rpc_frame && !contains_secret && !contains_diagnostic;
+  }
+
+  pub fnc self_check(): bool {
+    return admit_tool(true,false,false) &&
+      !admit_tool(true,true,false) &&
+      !admit_tool(true,false,true) &&
+      !admit_tool(false,false,false) &&
+      admit_stdout(true,false,false) &&
+      !admit_stdout(false,false,false) &&
+      !admit_stdout(true,true,false);
+  }
+end

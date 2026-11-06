@@ -30,6 +30,10 @@ jobs:
         run: cargo metadata --locked --format-version 1 >/dev/null
       - name: Format
         run: cargo fmt --all -- --check
+      - name: Verify bounded MCP and AttoLang admission policy under optimized Python
+        run: |
+          python3 -O formal/check_mcp_policy.py
+          python3 -O -m unittest -v formal/test_mcp_policy.py
       - name: Lint
         run: cargo clippy --locked --all-targets -- -D warnings
       - name: Test
